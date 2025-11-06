@@ -5,50 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoChapter</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script async src="script.js"></script>
+    <!-- load script after DOM parsing to avoid running before elements exist -->
+    <script defer src="script.js"></script>
 
 
 </head>
 <body>
     <!-- Header Section -->
+   <!-- Header Section -->
     <header>
         <div class="logo">🌐 CryptoChapter</div>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">Services</a>
-            <a href="#">Blog</a>
-            <a href="#">Contact Us</a>
-            <button class="connect-wallet">Connect Wallet</button>
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+        <nav class="navbar">
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Learn</a>
+                <a href="#">Trade</a>
+                <a href="#">Blog</a>
+            </div>
         </nav>
     </header>
 
+    <!-- Price ticker inserted below header -->
+    <div class="price-ticker" id="priceTicker" aria-live="polite" aria-atomic="true">
+        <div class="price-ticker__inner" id="priceTickerInner">Loading prices...</div>
+    </div>
 
 
-    <!-- Live Crypto Prices (moved below header) -->
-    <section class="crypto-prices" style="margin-bottom: 0;">
-        <h2>Live Crypto Prices</h2>
-        <div id="pricesContainer">
-            <!-- Prices will be loaded here -->
+
+
+    <!-- Live Crypto Prices removed -->
+
+    
+
+   
+
+    <!-- Latest News Section -->
+    <section class="latest-news">
+        <h2>Latest Crypto News</h2>
+        <div class="news-grid" id="newsGrid">
+            <!-- News items will be added here dynamically -->
+            <div class="news-loading">Loading latest crypto news...</div>
         </div>
-        <div class="chart-controls">
-            <label for="coinSelect"><strong>Show 7d Chart for:</strong></label>
-            <select id="coinSelect">
-                <option value="bitcoin">Bitcoin (BTC)</option>
-                <option value="ethereum">Ethereum (ETH)</option>
-                <option value="binancecoin">BNB</option>
-                <option value="solana">Solana (SOL)</option>
-                <option value="ripple">XRP</option>
-                <option value="cardano">Cardano (ADA)</option>
-                <option value="dogecoin">Dogecoin (DOGE)</option>
-                <option value="tron">TRON (TRX)</option>
-                <option value="polygon">Polygon (MATIC)</option>
-                <option value="polkadot">Polkadot (DOT)</option>
-                <option value="litecoin">Litecoin (LTC)</option>
-            </select>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="partners">
+        <h2>Our Trusted Partners</h2>
+        <div class="partners-logos">
+            <img src="/images/binance.png" alt="Binance">
+            
+            <img src="/images/bybit.png" alt="Bybit">
+            <img src="/images/mexc.png" alt="Mexc">
         </div>
-        <h3 id="chartTitle">Bitcoin Price Chart (7d)</h3>
-        <canvas id="cryptoChart" width="400" height="200"></canvas>
     </section>
 
     <!-- Main Section -->
@@ -65,42 +78,9 @@
             <div class="chart-icon">📈</div>
         </section>
 
-        <!-- News Button -->
-        <button class="news-toggle">📰 Latest News</button>
-
-        <!-- News Pop-up -->
-        <div class="news-container" id="newsPopup">
-            <div class="news-header">
-                <h3>Latest Crypto News</h3>
-                <button class="close-news">✖</button>
-            </div>
-            <div class="news-content" id="newsContent">
-                <!-- News items will be added here dynamically -->
-            </div>
-        </div>
     </main>
 
-    <!-- Features Section -->
-    <section class="features">
-        <h2>Why Choose CryptoChapter?</h2>
-        <div class="features-list">
-            <div class="feature-item">🔒 Secure Transactions</div>
-            <div class="feature-item">⚡ Fast & Reliable</div>
-            <div class="feature-item">💸 Low Fees</div>
-            <div class="feature-item">🌍 Global Access</div>
-        </div>
-    </section>
-
-    <!-- Partners Section -->
-    <section class="partners">
-        <h2>Our Trusted Partners</h2>
-        <div class="partners-logos">
-            <img src="https://via.placeholder.com/100x40?text=Binance" alt="Binance">
-            <img src="https://via.placeholder.com/100x40?text=Coinbase" alt="Coinbase">
-            <img src="https://via.placeholder.com/100x40?text=Kraken" alt="Kraken">
-            <img src="https://via.placeholder.com/100x40?text=Gemini" alt="Gemini">
-        </div>
-    </section>
+   
 
     <!-- Testimonials Section -->
     <section class="testimonials">
@@ -129,6 +109,17 @@
                 <strong>Is my wallet secure?</strong>
                 <p>Yes, we use industry-leading security protocols to keep your assets safe.</p>
             </div>
+        </div>
+    </section>
+
+      <!-- Features Section -->
+    <section class="features">
+        <h2>Why Choose CryptoChapter?</h2>
+        <div class="features-list">
+            <div class="feature-item">🔒 Secure Transactions</div>
+            <div class="feature-item">⚡ Fast & Reliable</div>
+            <div class="feature-item">💸 Low Fees</div>
+            <div class="feature-item">🌍 Global Access</div>
         </div>
     </section>
 
@@ -171,4 +162,3 @@
   
 </body>
 </html>
-
