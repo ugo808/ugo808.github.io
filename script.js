@@ -203,7 +203,12 @@ function fetchCryptoNews() {
     newsGrid.innerHTML = '<div class="news-loading">Loading latest crypto news...</div>';
 
     // Using CoinPaprika's public tags/news endpoint (No API key required)
-    fetch('https://api.coinpaprika.com/v1/news?limit=20')
+    function fetchCryptoNews() {
+    // Show loading state
+    newsGrid.innerHTML = '<div class="news-loading">Loading latest crypto news...</div>';
+
+    // Fetching CryptoPanic RSS feed via a free, open CORS JSON converter
+    fetch('https://api.rss2json.com/v1/api.json?rss_url=https://cryptopanic.com/news/rss/')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -211,17 +216,18 @@ function fetchCryptoNews() {
             return response.json();
         })
         .then(data => {
-            if (data && data.length > 0) {
+            if (data && data.items && data.items.length > 0) {
                 newsGrid.innerHTML = '';
                 
                 // Take up to 20 news items
-                data.slice(0, 20).forEach(news => {
+                data.items.slice(0, 20).forEach(news => {
                     const newsItem = document.createElement('div');
                     newsItem.className = 'news-item';
                     
-                    // CoinPaprika fields: .title and .lead (or .title and .description)
+                    // RSS2JSON uses .title and .description (or .content)
                     const title = news.title || 'Crypto Update';
-                    const body = news.lead || news.description || 'Click to view full coverage.';
+                    // Strip HTML tags if any exist in the description snippet
+                    const body = news.description ? news.description.replace(/<[^>]*>/g, '') : 'Click to view full coverage.';
                     
                     newsItem.innerHTML = `
                         <strong>${title}</strong>
