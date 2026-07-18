@@ -48,9 +48,6 @@ if (_watchVideo) {
     });
 }
 
-
-
-
 // Add wallet status message to header
 let walletStatus = document.getElementById('walletStatus');
 if (!walletStatus) {
@@ -69,8 +66,6 @@ async function connectToMetaMask() {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             const walletAddress = accounts[0];
             walletStatus.textContent = 'Connected: ' + walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
-            // Optionally, update button text
-            // document.querySelector('.connect-wallet').textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
             return walletAddress;
         } catch (err) {
             walletStatus.textContent = 'Connection rejected or failed.';
@@ -138,14 +133,11 @@ function getBotResponse(userMessage) {
     }
 }
 
-
 if (chatInput && sendMessage) {
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage.click();
     });
 }
-
-// Crypto prices & chart removed — chart code and Chart.js loader were removed
 
 // --- Price ticker: fetch prices and populate ticker ---
 function fetchTickerPrices() {
@@ -157,13 +149,11 @@ function fetchTickerPrices() {
         .then(data => {
             const inner = document.getElementById('priceTickerInner');
             if (!inner) return;
-            // build items string in the order of ids array
             let items = ids.map(id => {
                 const coin = (data || []).find(c => c.id === id);
                 const name = coin ? coin.name : (id === 'binancecoin' ? 'BNB' : (id === 'ripple' ? 'XRP' : (id === 'polkadot' ? 'DOT' : id.charAt(0).toUpperCase() + id.slice(1))));
                 const symbol = coin && coin.symbol ? coin.symbol.toUpperCase() : (name.match(/[A-Z]{2,}|[A-Z]/g) || [name]).slice(0,1)[0];
                 const price = coin && (coin.current_price !== undefined && coin.current_price !== null) ? Number(coin.current_price).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) : '—';
-                // try to use 24h change if available
                 const changeVal = coin && (coin.price_change_percentage_24h !== undefined && coin.price_change_percentage_24h !== null) ? Number(coin.price_change_percentage_24h) : null;
                 let changeHtml = '';
                 if (changeVal !== null) {
@@ -175,7 +165,6 @@ function fetchTickerPrices() {
                 return `<span class="price-ticker__item"><span class="symbol">${symbol}</span><span class="pair">${name}</span><span class="price">$${price}</span>${changeHtml}</span>`;
             }).join('');
 
-            // Duplicate content so animation loop is smooth
             inner.innerHTML = items + items;
         })
         .catch(err => {
@@ -187,23 +176,13 @@ function fetchTickerPrices() {
 
 // initial fetch and periodic refresh
 fetchTickerPrices();
-setInterval(fetchTickerPrices, 60 * 1000); // refresh every 60s
-// Crypto prices and chart code removed per request (no fetchCryptoPrices, no chart rendering)
+setInterval(fetchTickerPrices, 60 * 1000); 
+
 // Get reference to news grid
 const newsGrid = document.getElementById('newsGrid');
 
 // Fetch and display crypto news
 function fetchCryptoNews() {
-    // Show loading state
-    newsGrid.innerHTML = '<div class="news-loading">Loading latest crypto news...</div>';
-
-    // Using Coinpaprika News API (no API key required for basic usage)
-    function fetchCryptoNews() {
-    // Show loading state
-    newsGrid.innerHTML = '<div class="news-loading">Loading latest crypto news...</div>';
-
-    // Using CoinPaprika's public tags/news endpoint (No API key required)
-    function fetchCryptoNews() {
     // Show loading state
     newsGrid.innerHTML = '<div class="news-loading">Loading latest crypto news...</div>';
 
@@ -224,9 +203,7 @@ function fetchCryptoNews() {
                     const newsItem = document.createElement('div');
                     newsItem.className = 'news-item';
                     
-                    // RSS2JSON uses .title and .description (or .content)
                     const title = news.title || 'Crypto Update';
-                    // Strip HTML tags if any exist in the description snippet
                     const body = news.description ? news.description.replace(/<[^>]*>/g, '') : 'Click to view full coverage.';
                     
                     newsItem.innerHTML = `
@@ -244,9 +221,9 @@ function fetchCryptoNews() {
             newsGrid.innerHTML = '<div class="news-loading">Unable to load news. Please try again later.</div>';
         });
 }
+
 // Initial news load
 fetchCryptoNews();
 
 // Refresh news every 5 minutes
 setInterval(fetchCryptoNews, 5 * 60 * 1000);
-
