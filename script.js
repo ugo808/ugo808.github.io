@@ -197,20 +197,35 @@ function fetchCryptoNews() {
     // Show loading state
     newsGrid.innerHTML = '<div class="news-loading">Loading latest crypto news...</div>';
 
-    // Using CryptoCompare News API (no API key required for basic usage)
-    fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN')
-        .then(response => response.json())
+    // Using Coinpaprika News API (no API key required for basic usage)
+    function fetchCryptoNews() {
+    // Show loading state
+    newsGrid.innerHTML = '<div class="news-loading">Loading latest crypto news...</div>';
+
+    // Using CoinPaprika's public tags/news endpoint (No API key required)
+    fetch('https://api.coinpaprika.com/v1/news?limit=20')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
-            if (data.Data && data.Data.length > 0) {
+            if (data && data.length > 0) {
                 newsGrid.innerHTML = '';
-                // Take first 20 news items
-                data.Data.slice(0, 20).forEach(news => {
+                
+                // Take up to 20 news items
+                data.slice(0, 20).forEach(news => {
                     const newsItem = document.createElement('div');
                     newsItem.className = 'news-item';
-                    // Format the news content with title and full description
+                    
+                    // CoinPaprika fields: .title and .lead (or .title and .description)
+                    const title = news.title || 'Crypto Update';
+                    const body = news.lead || news.description || 'Click to view full coverage.';
+                    
                     newsItem.innerHTML = `
-                        <strong>${news.title}</strong>
-                        <p>${news.body}</p>
+                        <strong>${title}</strong>
+                        <p>${body}</p>
                     `;
                     newsGrid.appendChild(newsItem);
                 });
@@ -223,7 +238,6 @@ function fetchCryptoNews() {
             newsGrid.innerHTML = '<div class="news-loading">Unable to load news. Please try again later.</div>';
         });
 }
-
 // Initial news load
 fetchCryptoNews();
 
